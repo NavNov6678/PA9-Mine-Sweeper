@@ -1,3 +1,4 @@
-# pa9 project
+# PA9 Project
 
-Douglas Bono
+Names:
+Douglas Bono | Lab Section # 03
