@@ -30,9 +30,15 @@
     <ClInclude Include="ScreenEffects.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="mine.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

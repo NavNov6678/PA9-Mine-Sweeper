@@ -131,10 +131,12 @@
     <ClInclude Include="Drawing.hpp" />
     <ClInclude Include="Fields.hpp" />
     <ClInclude Include="GetCells.hpp" />
+    <ClInclude Include="mine.hpp" />
     <ClInclude Include="ScreenEffects.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
