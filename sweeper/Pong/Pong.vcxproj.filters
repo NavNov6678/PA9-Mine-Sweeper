@@ -15,18 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <None Include="orchestral.ogg">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="main.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Paddle.hpp">
+    <ClInclude Include="mine.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="orchestral.ogg">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
 </Project>
