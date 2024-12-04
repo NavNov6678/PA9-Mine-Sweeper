@@ -8,7 +8,7 @@
 // 
 //          11/19/24 - Finished declaring class Paddle. Introduced some basic
 //                     paddle movements.
-//
+//editing
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio/Music.hpp>
