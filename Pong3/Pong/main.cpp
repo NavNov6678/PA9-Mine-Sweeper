@@ -107,7 +107,7 @@ int main() {
                         inStartScreen = true;
                     }
                     else if (exitText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                        window.close();  
+                        window.close();
                     }
                 }
             }
