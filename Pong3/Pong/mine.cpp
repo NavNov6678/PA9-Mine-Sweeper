@@ -1,90 +1,183 @@
 #include "mine.hpp"
 
 Minesweeper::Minesweeper() : gameOver(false) {
-    generateGrid();  // Initial grid setup
+    generateGrid();
+}
+
+void EmptyCell::draw(RenderWindow& window, int x, int y) {
+    RectangleShape cell(Vector2f(60, 60));
+    cell.setPosition(x * 60, y * 60);
+    if (isRevealed()) {
+        cell.setFillColor(Color::White);
+    }
+    else {
+        cell.setFillColor(Color::Cyan);
+    }
+    cell.setOutlineColor(Color::Black);
+    cell.setOutlineThickness(1);
+    window.draw(cell);
+}
+
+void EmptyCell::reveal() {
+    revealed = true;
+}
+
+bool EmptyCell::isRevealed() const {
+    return revealed;
+}
+
+void MineCell::draw(RenderWindow& window, int x, int y) {
+    RectangleShape cell(Vector2f(60, 60));
+    cell.setPosition(x * 60, y * 60);
+    if (isRevealed()) {
+        cell.setFillColor(Color::Red);
+    }
+    else {
+        cell.setFillColor(Color::Cyan);
+    }
+    cell.setOutlineColor(Color::Black);
+    cell.setOutlineThickness(1);
+    window.draw(cell);
+}
+
+void MineCell::reveal() {
+    revealed = true;
+}
+
+bool MineCell::isRevealed() const {
+    return revealed;
+}
+
+NumberCell::NumberCell(int number) : number(number) {}
+
+void NumberCell::draw(RenderWindow& window, int x, int y) {
+    RectangleShape cell(Vector2f(60, 60));
+    cell.setPosition(x * 60, y * 60);
+    if (isRevealed()) {
+        cell.setFillColor(Color::White);
+    }
+    else {
+        cell.setFillColor(Color::Cyan);
+    }
+    cell.setOutlineColor(Color::Black);
+    cell.setOutlineThickness(1);
+    window.draw(cell);
+
+    if (isRevealed()) {
+        Text numberText;
+        Font font;
+        if (!font.loadFromFile("Arial.ttf")) {
+            cout << "Error loading font" << endl;
+        }
+        numberText.setFont(font);
+        numberText.setString(std::to_string(number));
+        numberText.setCharacterSize(30);
+        numberText.setFillColor(Color::Black);
+        numberText.setPosition(x * 60 + 20, y * 60 + 10);
+        window.draw(numberText);
+    }
+}
+
+void NumberCell::reveal() {
+    revealed = true;
+}
+
+bool NumberCell::isRevealed() const {
+    return revealed;
+}
+
+void Minesweeper::generateGrid() {
+    grid.resize(10, std::vector<GridElement*>(10, nullptr));
+
+    srand(time(0));
+
+    for (int x = 0; x < 10; ++x) {
+        for (int y = 0; y < 10; ++y) {
+            int randNum = rand() % 10;
+            if (randNum == 0) {
+                grid[x][y] = new MineCell();
+            }
+            else {
+                grid[x][y] = new EmptyCell();
+            }
+        }
+    }
+
+    for (int x = 0; x < 10; ++x) {
+        for (int y = 0; y < 10; ++y) {
+            if (dynamic_cast<MineCell*>(grid[x][y])) {
+                continue;
+            }
+            int mineCount = 0;
+            for (int dx = -1; dx <= 1; ++dx) {
+                for (int dy = -1; dy <= 1; ++dy) {
+                    int nx = x + dx;
+                    int ny = y + dy;
+                    if (nx >= 0 && ny >= 0 && nx < 10 && ny < 10 &&
+                        dynamic_cast<MineCell*>(grid[nx][ny])) {
+                        ++mineCount;
+                    }
+                }
+            }
+            grid[x][y] = new NumberCell(mineCount);
+        }
+    }
 }
 
 void Minesweeper::handleEvents(RenderWindow& window) {
-    // Handle mouse clicks or other events for the game
-    if (gameOver) return;  // Do nothing if the game is over
-    // You can add logic for handling grid clicks or game-related events
+    if (Mouse::isButtonPressed(Mouse::Left)) {
+        Vector2i mousePos = Mouse::getPosition(window);
+        int x = mousePos.x / 60;
+        int y = mousePos.y / 60;
+
+        if (x >= 0 && y >= 0 && x < 10 && y < 10) {
+            revealCell(x, y, window);
+        }
+    }
 }
 
 void Minesweeper::drawGame(RenderWindow& window) {
     for (int x = 0; x < 10; ++x) {
         for (int y = 0; y < 10; ++y) {
-            // If the game is over, reveal all mines
-            if (gameOver) {
-                if (dynamic_cast<MineCell*>(grid[x][y]) && !grid[x][y]->isRevealed()) {
-                    grid[x][y]->reveal();  // Reveal all mines when the game is over
-                }
-            }
-            grid[x][y]->draw(window, x, y);  // Draw the cell (either empty, mine, or number)
+            grid[x][y]->draw(window, x, y);
         }
     }
-}
-
-void Minesweeper::generateGrid() {
-    // Set up the grid and place mines and numbers on the grid
-    grid.resize(10, std::vector<GridElement*>(10, nullptr));
-
-    // Fill the grid with EmptyCell objects initially
-    for (int x = 0; x < 10; ++x) {
-        for (int y = 0; y < 10; ++y) {
-            grid[x][y] = new EmptyCell();  // This should be a method for creating EmptyCell objects
-        }
-    }
-
-    // Place some mines and numbers on the grid
-    int mineCount = 15;  // Adjust as needed
-    while (mineCount > 0) {
-        int x = rand() % 10;
-        int y = rand() % 10;
-
-        if (dynamic_cast<EmptyCell*>(grid[x][y])) {
-            delete grid[x][y];
-            grid[x][y] = new MineCell();
-            --mineCount;
-        }
-    }
-
-    // After placing mines, you would generate number cells for the surrounding areas
 }
 
 void Minesweeper::revealCell(int x, int y, RenderWindow& window) {
-    if (gameOver || grid[x][y]->isRevealed()) return;
-    grid[x][y]->reveal();  // Reveal the selected cell
-    // Handle revealing the cell here (empty, mine, or number)
-}
-
-bool Minesweeper::isGameOver() const {
-    return gameOver;
-}
-
-void Minesweeper::resetGame() {
-    // Clean up old grid and reset the game
-    cleanUpGrid();
-    gameOver = false;
-    generateGrid();
-}
-
-bool Minesweeper::checkWin() {
-    // Implement win condition logic (e.g., checking if all non-mine cells are revealed)
-    return false;
+    if (dynamic_cast<MineCell*>(grid[x][y])) {
+        cout << "Mine hit at (" << x << ", " << y << ")!" << endl;
+        gameOver = true;
+    }
+    grid[x][y]->reveal();
 }
 
 void Minesweeper::cleanUpGrid() {
-    // Clean up dynamically allocated grid elements
     for (int x = 0; x < 10; ++x) {
         for (int y = 0; y < 10; ++y) {
             delete grid[x][y];
         }
     }
-    grid.clear();
+}
+
+void Minesweeper::resetGame() {
+    cleanUpGrid();
+    generateGrid();
+    gameOver = false;
+}
+
+bool Minesweeper::checkWin() {
+    for (int x = 0; x < 10; ++x) {
+        for (int y = 0; y < 10; ++y) {
+            if ((dynamic_cast<EmptyCell*>(grid[x][y]) || dynamic_cast<NumberCell*>(grid[x][y])) && !grid[x][y]->isRevealed()) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 int Minesweeper::countMines() {
-    // Count the number of mines on the grid (can be used for checking win conditions)
     int mineCount = 0;
     for (int x = 0; x < 10; ++x) {
         for (int y = 0; y < 10; ++y) {

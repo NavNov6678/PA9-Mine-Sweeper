@@ -152,15 +152,11 @@
     <None Include="orchestral.ogg" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameLogic.cpp" />
-    <ClCompile Include="GridElement.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mine.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GridElement.hpp" />
     <ClInclude Include="mine.hpp" />
-    <ClInclude Include="MineSweeper.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

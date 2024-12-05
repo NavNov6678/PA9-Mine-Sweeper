@@ -56,7 +56,7 @@ public:
     void drawGame(RenderWindow& window);
     void generateGrid();
     void revealCell(int x, int y, RenderWindow& window);
-    bool isGameOver() const;
+    bool isGameOver() const { return gameOver; }
     void resetGame();
     bool checkWin();
     int countMines();
