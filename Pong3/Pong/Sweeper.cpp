@@ -1,4 +1,4 @@
-/*#include "mine.hpp"
+#include "mine.hpp"
 
 int main() {
     RenderWindow window(VideoMode(1200, 700), "Minesweeper");
@@ -107,7 +107,7 @@ int main() {
                         inStartScreen = true;
                     }
                     else if (exitText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                        window.close();  
+                        window.close();
                     }
                 }
             }
@@ -138,4 +138,3 @@ int main() {
 
     return 0;
 }
-*/

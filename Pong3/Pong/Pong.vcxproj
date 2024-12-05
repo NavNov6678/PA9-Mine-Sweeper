@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mine.cpp" />
+    <ClCompile Include="Sweeper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mine.hpp" />

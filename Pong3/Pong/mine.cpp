@@ -10,6 +10,7 @@ void EmptyCell::draw(RenderWindow& window, int x, int y) {
     if (isRevealed()) {
         cell.setFillColor(Color::White);
     }
+
     else {
         cell.setFillColor(Color::Cyan);
     }
